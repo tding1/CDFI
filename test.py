@@ -10,7 +10,7 @@ from torchvision.utils import save_image as imwrite
 
 from lpips_pytorch import lpips
 from models.cdfi_adacof import CDFI_adacof
-from utility import print_and_save
+from utility import print_and_save, count_network_parameters
 
 
 class MyTest:
@@ -108,7 +108,7 @@ def parse_args():
 
     parser.add_argument('--gpu_id', type=int, default=0)
     parser.add_argument('--checkpoint', type=str, default='./checkpoints/CDFI_adacof.pth')
-    parser.add_argument('--out_dir', type=str, default='./output_cdfi_adacof_test')
+    parser.add_argument('--out_dir', type=str, default='./test_output/cdfi_adacof')
     parser.add_argument('--kernel_size', type=int, default=11)
     parser.add_argument('--dilation', type=int, default=2)
 
@@ -120,12 +120,14 @@ def main():
     torch.cuda.set_device(args.gpu_id)
 
     model = CDFI_adacof(args).cuda()
+    print('===============================')
+    print("# of model parameters is: " + str(count_network_parameters(model)))
 
     print('Loading the model...')
-
     checkpoint = torch.load(args.checkpoint)
     model.load_state_dict(checkpoint['state_dict'])
 
+    print('===============================')
     print('Test: Middlebury_others')
     test_dir = args.out_dir + '/middlebury_others'
     if not os.path.exists(test_dir):
@@ -133,6 +135,7 @@ def main():
     test_db = Middlebury_other('./test_data/middlebury_others/input', './test_data/middlebury_others/gt')
     test_db.test(model, test_dir)
 
+    print('===============================')
     print('Test: UCF101-DVF')
     test_dir = args.out_dir + '/ucf101-dvf'
     if not os.path.exists(test_dir):

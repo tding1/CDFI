@@ -184,7 +184,7 @@ def main():
 
     # initialize our model
     model = CDFI_adacof(args).cuda()
-    print("# of model parameters is : " + str(utility.count_network_parameters(model)))
+    print("# of model parameters is: " + str(utility.count_network_parameters(model)))
 
     # prepare the loss
     loss = Loss(args)
