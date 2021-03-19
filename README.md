@@ -84,7 +84,7 @@ $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 11 --dilation 2
 
 By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
 
-## Training Our Model
+## Train Our Model
 
 ### Training data
 
@@ -104,9 +104,24 @@ $ python train.py --gpu_id 0 --data_dir path/to/your/downloaded/vimeo_triplet/
 
 It will generate an unique ID for each training, and all the intermediate results/records will be saved under `model_weights/<training id>/`. There are many other training options, e.g., `--lr`, `--epochs`, `--loss` and so on, can be found in `train.py`.
 
-## Applying CDFI to New Models
+## Apply CDFI to New Models
 
-Coming soon...
+One nice thing about CDFI is that the framework can be easily applied to other (heavy) DNN models and potentially boost their performance. The key to CDFI is the *optimization-based* compression that compresses a model via fine-grained pruning. In particular, we use the efficient and easy-to-use sparsity-inducing optimizer [OBPROXSG](https://github.com/tianyic/obproxsg) (see also [paper](https://arxiv.org/abs/2004.03639)), and summarize the compression procedure for any other model in the following.
+
+- Copy the [OBPROXSG optimizer](https://github.com/tianyic/obproxsg/blob/master/optimizer/obproxsg.py), which is already packaged into `torch.optim.optimizer`, to your working directory
+- Starting from a pre-trained model, finetune its weights by using the OBPROXSG optimizer, like using any standard built-in optimizer such as SGD or Adam
+  - It is not necessarily to use the full dataset for this finetuning process
+
+- The paramters for the OBPROXSG optimizer
+  - `lr`: learning rate
+  - `lambda_`: coefficient of the L1 regularization term
+  - `epochSize`: number of batches in a epoch
+  - `Np`: number of *proximal steps*, which is set to be 2 for pruning AdaCoF
+  - `No`: number of *orthant* steps (key step to promote sparsity), recommend using the default setting
+  - `eps`: threshold for trimming zeros, which is set to be 0.0001 for pruning AdaCoF 
+- After the optimization is done (either by reaching a maximum number of epochs or achieving a high sparsity), use the layer density as the compression ratio for that layer, as described in the paper
+
+Now it's ready to make further improvements/modifications on the compressed model.
 
 ## Citation
 
