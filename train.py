@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument('--use_cudnn', type=bool, default=True)
 
     # Directory Setting
-    parser.add_argument('--data_dir', type=str, default='../../data/vimeo_triplet/')
+    parser.add_argument('--data_dir', type=str, default='./vimeo_triplet/')
     parser.add_argument('--uid', type=str, default=None)
     parser.add_argument('--force', action='store_true', help='force to override the given uid')
     parser.add_argument('--test_input', type=str, default='./test_data/middlebury_others/input')
@@ -34,7 +34,7 @@ def parse_args():
 
     # Learning Options
     parser.add_argument('--epochs', type=int, default=100, help='Max Epochs')
-    parser.add_argument('--batch_size', type=int, default=2, help='Batch size')
+    parser.add_argument('--batch_size', type=int, default=8, help='Batch size')
     parser.add_argument('--loss', type=str, default='1*Charb+0.01*g_Spatial+0.005*VGG', help='loss function configuration')
 
     # Optimization specifications

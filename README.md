@@ -23,13 +23,18 @@ We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpo
 
 - Our final model also performs favorably against other state-of-the-arts (details refer to our paper)
 
+  <p align="center">
+    <img src="figs/visual.jpg" />
+  </p>
+
 - The proposed framework is generic and can be easily transferred to other DNN-based frame interpolation method
 
 <p align="center">
   <img src="figs/cdfi_fps_160.gif" />
 </p>
 
-The above GIF is a demo of using our method to genenrate slow motion video, which increases the FPS from 5 to 160. We also provide a long video demonstration [here](https://www.youtube.com/watch?v=KEUcw4xoB5E) (redirect to YouTube).
+
+The above GIF is a demo of using our method to generate slow motion video, which increases the FPS from 5 to 160. We also provide a long video demonstration [here](https://www.youtube.com/watch?v=KEUcw4xoB5E) (redirect to YouTube).
 
 ## Environment
 
@@ -58,7 +63,7 @@ For user convenience, we already provide the [Middlebury](https://vision.middleb
 
 ### Evaluation metrics
 
-We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch`, which is a slightly modifed version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeezenet backbone).
+We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch`, which is a slightly modified version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeezenet backbone).
 
 ### Test our pre-trained CDFI model
 
@@ -66,7 +71,7 @@ We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM,
 $ python test.py --gpu_id 0
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/cdfi_adacof/`.
+By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/cdfi_adacof/`.
 
 ### Test the compressed AdaCoF
 
@@ -74,7 +79,7 @@ By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. I
 $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 5 --dilation 1
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
+By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
 
 ### Test the compressed AdaCoF+
 
@@ -82,7 +87,7 @@ By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F
 $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 11 --dilation 2
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
+By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
 
 ## Train Our Model
 
@@ -99,7 +104,7 @@ $ rm vimeo_triplet.zip
 ### Start training
 
 ~~~bash
-$ python train.py --gpu_id 0 --data_dir path/to/your/downloaded/vimeo_triplet/
+$ python train.py --gpu_id 0 --data_dir path/to/vimeo_triplet/ --batch_size 8
 ~~~
 
 It will generate an unique ID for each training, and all the intermediate results/records will be saved under `model_weights/<training id>/`. There are many other training options, e.g., `--lr`, `--epochs`, `--loss` and so on, can be found in `train.py`.
@@ -112,7 +117,7 @@ One nice thing about CDFI is that the framework can be easily applied to other (
 - Starting from a pre-trained model, finetune its weights by using the OBPROXSG optimizer, like using any standard built-in optimizer such as SGD or Adam
   - It is not necessarily to use the full dataset for this finetuning process
 
-- The paramters for the OBPROXSG optimizer
+- The parameters for the OBPROXSG optimizer
   - `lr`: learning rate
   - `lambda_`: coefficient of the L1 regularization term
   - `epochSize`: number of batches in a epoch
@@ -130,16 +135,3 @@ Coming soon...
 ## Acknowledgements
 
 The code is largely based on  [HyeongminLEE/AdaCoF-pytorch](https://github.com/HyeongminLEE/AdaCoF-pytorch) and [baowenbo/DAIN](https://github.com/baowenbo/DAIN).
-
-
-
-
-
-
-
-
-
-
-
-
-
