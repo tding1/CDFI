@@ -54,7 +54,11 @@ $ git clone https://github.com/tding1/CDFI.git
 
 ### Testing data
 
-For user convenience, we already provide the [Middlebury](https://vision.middlebury.edu/flow/data/) and [UCF101-DVF](https://github.com/liuziwei7/voxel-flow) datasets in our repository, which can be found under directory `test_data/`.
+For user convenience, we already provide the [Middlebury](https://vision.middlebury.edu/flow/data/) and [UCF101-DVF](https://github.com/liuziwei7/voxel-flow) test datasets in our repository, which can be found under directory `test_data/`.
+
+### Evaluation metrics
+
+We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch`, which is a slightly modifed version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeezenet backbone).
 
 ### Test our pre-trained CDFI model
 
@@ -62,7 +66,7 @@ For user convenience, we already provide the [Middlebury](https://vision.middleb
 $ python test.py --gpu_id 0
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. It will print the quatitative results, and the interpolated images will be saved under `test_output/cdfi_adacof`.
+By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/cdfi_adacof/`.
 
 ### Test the compressed AdaCoF
 
@@ -70,7 +74,7 @@ By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. I
 $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 5 --dilation 1
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quatitative results, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1`.
+By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
 
 ### Test the compressed AdaCoF+
 
@@ -78,9 +82,9 @@ By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F
 $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 11 --dilation 2
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quatitative results, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2`.
+By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quatitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
 
-## Training New Models
+## Training Our Model
 
 ### Training data
 
@@ -95,10 +99,14 @@ $ rm vimeo_triplet.zip
 ### Start training
 
 ~~~bash
-$ python train.py --gpu_id 0 --data_dir path/to/your/downloaed/vimeo_triplet/
+$ python train.py --gpu_id 0 --data_dir path/to/your/downloaded/vimeo_triplet/
 ~~~
 
-It will generate an unique ID for each training, and all the intermediate results/records will be saved under `model_weights/<training id>/`. There are many other options, e.g., `--lr`, `--epochs`, `--loss` and so on can be found in `train.py`.
+It will generate an unique ID for each training, and all the intermediate results/records will be saved under `model_weights/<training id>/`. There are many other training options, e.g., `--lr`, `--epochs`, `--loss` and so on, can be found in `train.py`.
+
+## Applying CDFI to New Models
+
+
 
 ## Citation
 
