@@ -25,7 +25,9 @@ We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpo
 
 - The proposed framework is generic and can be easily transferred to other DNN-based frame interpolation method
 
-![drift_fps_160](figs/cdfi_fps_160.gif)
+<p align="center">
+  <img src="figs/cdfi_fps_160.gif" />
+</p>
 
 The above GIF is a demo of using our method to genenrate slow motion video, which increases the FPS from 5 to 160. We also provide a long video demonstration [here](https://www.youtube.com/watch?v=KEUcw4xoB5E) (redirect to YouTube).
 
