@@ -108,7 +108,7 @@ $ rm vimeo_triplet.zip
 $ python train.py --gpu_id 0 --data_dir path/to/vimeo_triplet/ --batch_size 8
 ~~~
 
-It will generate an unique ID for each training, and all the intermediate results/records will be saved under `model_weights/<training id>/`. There are many other training options, e.g., `--lr`, `--epochs`, `--loss` and so on, can be found in `train.py`.
+It will generate an unique ID for each training, and all the intermediate results/records will be saved under `model_weights/<training id>/`. For a GPU device with memory around 10GB, the `--batch_size` can take a value as large as 3, otherwise CUDA may be out of memory. There are many other training options, e.g., `--lr`, `--epochs`, `--loss` and so on, can be found in `train.py`.
 
 ## Apply CDFI to New Models
 
