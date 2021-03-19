@@ -114,7 +114,7 @@ Coming soon...
 
 ## Acknowledgements
 
-The code is larged based on  [HyeongminLEE/AdaCoF-pytorch](https://github.com/HyeongminLEE/AdaCoF-pytorch) and [baowenbo/DAIN](https://github.com/baowenbo/DAIN).
+The code is largely based on  [HyeongminLEE/AdaCoF-pytorch](https://github.com/HyeongminLEE/AdaCoF-pytorch) and [baowenbo/DAIN](https://github.com/baowenbo/DAIN).
 
 
 
