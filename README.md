@@ -12,7 +12,7 @@ We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpo
 
 - We achieve a significant performance gain with only a quarter in size compared with the original AdaCoF
 
-  |                    |            Vimeo-90K            |           Middlebury            |           UCF101-DVF            | Size  |
+  |                    |            Vimeo-90K            |           Middlebury            |           UCF101-DVF            | #Params  |
   | :----------------: | :-----------------------------: | :-----------------------------: | :-----------------------------: | :---: |
   |                    |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |       |
   |       AdaCoF       |       34.38, 0.974, 0.019       |       35.74, 0.979, 0.019       |     35.20, **0.967**, 0.019     | 21.8M |
