@@ -63,7 +63,7 @@ For user convenience, we already provide the [Middlebury](https://vision.middleb
 
 ### Evaluation metrics
 
-We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch`, which is a slightly modified version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeezenet backbone).
+We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch/`, which is a slightly modified version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeezenet backbone).
 
 ### Test our pre-trained CDFI model
 
@@ -93,7 +93,7 @@ By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F
 
 ### Training data
 
-We use the [Vimeo-90K](https://arxiv.org/abs/1711.09078) triplet dataset for video frame interpolation task, which is relatively large (more than 32 GB).
+We use the [Vimeo-90K](https://arxiv.org/abs/1711.09078) triplet dataset for video frame interpolation task, which is relatively large (>32 GB).
 
 ~~~bash
 $ wget http://data.csail.mit.edu/tofu/dataset/vimeo_triplet.zip
@@ -113,20 +113,20 @@ It will generate an unique ID for each training, and all the intermediate result
 
 One nice thing about CDFI is that the framework can be easily applied to other (heavy) DNN models and potentially boost their performance. The key to CDFI is the *optimization-based* compression that compresses a model via fine-grained pruning. In particular, we use the efficient and easy-to-use sparsity-inducing optimizer [OBPROXSG](https://github.com/tianyic/obproxsg) (see also [paper](https://arxiv.org/abs/2004.03639)), and summarize the compression procedure for any other model in the following.
 
-- Copy the [OBPROXSG optimizer](https://github.com/tianyic/obproxsg/blob/master/optimizer/obproxsg.py), which is already packaged into `torch.optim.optimizer`, to your working directory
-- Starting from a pre-trained model, finetune its weights by using the OBPROXSG optimizer, like using any standard built-in optimizer such as SGD or Adam
+- Copy the [OBPROXSG optimizer](https://github.com/tianyic/obproxsg/blob/master/optimizer/obproxsg.py), which is already implemented as `torch.optim.optimizer`, to your working directory
+- Starting from a pre-trained model, finetune its weights by using the OBPROXSG optimizer, like using any standard PyTorch built-in optimizer such as SGD or Adam
   - It is not necessarily to use the full dataset for this finetuning process
-
 - The parameters for the OBPROXSG optimizer
   - `lr`: learning rate
   - `lambda_`: coefficient of the L1 regularization term
   - `epochSize`: number of batches in a epoch
   - `Np`: number of *proximal steps*, which is set to be 2 for pruning AdaCoF
-  - `No`: number of *orthant* steps (key step to promote sparsity), recommend using the default setting
+  - `No`: number of *orthant* steps (key step to promote sparsity), for which we recommend using the default setting
   - `eps`: threshold for trimming zeros, which is set to be 0.0001 for pruning AdaCoF 
 - After the optimization is done (either by reaching a maximum number of epochs or achieving a high sparsity), use the layer density as the compression ratio for that layer, as described in the paper
+- As an example, compare the architectures in `models/adacofnet.py` and `model/compressed_adacof.py` for compressing AdaCoF with the above procedure
 
-Now it's ready to make further improvements/modifications on the compressed model.
+Now it's ready to make further improvements/modifications on the compressed model, based on the understanding of its flaws/drawbacks.
 
 ## Citation
 
