@@ -26,7 +26,7 @@ def main():
     torch.cuda.set_device(args.gpu_id)
 
     if args.kernel_size == 5 and args.dilation == 1:
-        args.checkpoint = './checkpoints/compressed_5.pth'
+        args.checkpoint = './checkpoints/compressed_adacof_F_5_D_1.pth'
         args.out_dir = './test_output/compressed_adacof_F_5_D_1'
     elif args.kernel_size == 11 and args.dilation == 2:
         args.checkpoint = './checkpoints/compressed_adacof_F_11_D_2.pth'
