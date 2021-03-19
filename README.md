@@ -55,6 +55,7 @@ Download repository:
 
 ~~~bash
 $ git clone https://github.com/tding1/CDFI.git
+$ cd CDFI/
 ~~~
 
 ### Testing data

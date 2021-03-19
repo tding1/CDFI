@@ -61,7 +61,7 @@ class MyTest:
         av_psnr /= len(self.im_list)
         av_ssim /= len(self.im_list)
         av_lpips /= len(self.im_list)
-        msg = '{:<15s}{:<20.16f}{:<23.16f}{:<23.16f}'.format('Average: ', av_psnr, av_ssim, av_lpips)
+        msg = '\n{:<15s}{:<20.16f}{:<23.16f}{:<23.16f}'.format('Average: ', av_psnr, av_ssim, av_lpips)
         if file_stream:
             print_and_save(msg, file_stream)
         else:
