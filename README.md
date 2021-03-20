@@ -80,7 +80,7 @@ By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. I
 $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 5 --dilation 1
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
+By default, it will load the compressed AdaCoF model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
 
 ### Test the compressed AdaCoF+
 
@@ -88,7 +88,15 @@ By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F
 $ python test_compressed_adacof.py --gpu_id 0 --kernel_size 11 --dilation 2
 ~~~
 
-By default, it will load our pre-trained model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
+By default, it will load the compressed AdaCoF+ model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
+
+### Interpolate two frames
+
+~~~bash
+$ python interpolate_twoframe.py --gpu_id 0 --first_frame figs/0.png --second_frame figs/1.png --output_frame output.png
+~~~
+
+By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`, and generate the intermediate frame `output.png` given two consecutive frames in a sequence. 
 
 ## Train Our Model
 
