@@ -8,7 +8,7 @@ IEEE Conference on Computer Vision and Pattern Recognition (**CVPR**), 2021
 
 ## Introduction
 
-We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpolation (**CDFI**), that leverages model compression to significantly reduce the model size while achieving superior performance. Concretely, we first compress  [AdaCoF](https://openaccess.thecvf.com/content_CVPR_2020/html/Lee_AdaCoF_Adaptive_Collaboration_of_Flows_for_Video_Frame_Interpolation_CVPR_2020_paper.html) and show that a 10X compressed AdaCoF performs similarly as its original counterpart; then we further improve upon this compressed model with simple modifications. 
+We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpolation (**CDFI**), that leverages model compression to significantly reduce the model size (allows a better understanding of the current architecture) while making room for further improvements and achieving superior performance in the end. Concretely, we first compress  [AdaCoF](https://openaccess.thecvf.com/content_CVPR_2020/html/Lee_AdaCoF_Adaptive_Collaboration_of_Flows_for_Video_Frame_Interpolation_CVPR_2020_paper.html) and show that a 10X compressed AdaCoF performs similarly as its original counterpart; then we further improve upon this compressed model with simple modifications. *Note that typically it is difficult to implement the same improvements on the original heavy model.*
 
 - We achieve a significant performance gain with only a quarter in size compared with the original AdaCoF
 
