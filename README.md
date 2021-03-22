@@ -1,6 +1,6 @@
 # CDFI (Compression-Driven-Frame-Interpolation)
 
-[Paper]() (Coming soon...)
+[Paper]() (Coming soon...) | [arXiv](https://arxiv.org/abs/2103.10559)
 
 [Tianyu Ding*](https://www.tianyuding.com), [Luming Liang*](https://scholar.google.com/citations?user=vTgdAS4AAAAJ&hl=en), [Zhihui Zhu](http://mysite.du.edu/~zzhu61/index.html), Ilya Zharkov
 
