@@ -133,7 +133,7 @@ One nice thing about CDFI is that the framework can be easily applied to other (
   - `No`: number of *orthant* steps (key step to promote sparsity), for which we recommend using the default setting
   - `eps`: threshold for trimming zeros, which is set to be 0.0001 for pruning AdaCoF 
 - After the optimization is done (either by reaching a maximum number of epochs or achieving a high sparsity), use the layer density as the compression ratio for that layer, as described in the paper
-- As an example, compare the architectures in `models/adacofnet.py` and `model/compressed_adacof.py` for compressing AdaCoF with the above procedure
+- As an example, compare the architectures in `models/adacof.py` and `model/compressed_adacof.py` for compressing AdaCoF with the above procedure
 
 Now it's ready to make further improvements/modifications on the compressed model, based on the understanding of its flaws/drawbacks.
 
