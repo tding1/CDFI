@@ -1,14 +1,13 @@
-import os
 import argparse
 
 import torch
 import numpy as np
-from PIL import Image
 import skimage.metrics
-from torchvision import transforms
 from torchvision.utils import save_image as imwrite
+from torch.utils.data import DataLoader
 
 from lpips_pytorch import lpips
+from datasets import *
 from models.cdfi_adacof import CDFI_adacof
 from utility import print_and_save, count_network_parameters
 
@@ -35,16 +34,16 @@ class MyTest:
                 in0, in1 = self.input0_list[idx].unsqueeze(0).cuda(), self.input1_list[idx].unsqueeze(0).cuda()
                 frame_out = model(in0, in1)
 
-                lps = lpips(self.gt_list[idx].cuda(), frame_out, net_type='squeeze')
-
                 imwrite(frame_out, output_dir + '/' + self.im_list[idx] + '/' + output_name + '.png', range=(0, 1))
 
-                frame_out = frame_out.squeeze().detach().cpu().numpy()
                 gt = self.gt_list[idx].numpy()
+                ref = self.transform(
+                    Image.open(output_dir + '/' + self.im_list[idx] + '/' + output_name + '.png')).numpy()
 
-                psnr = skimage.metrics.peak_signal_noise_ratio(image_true=gt, image_test=frame_out)
-                ssim = skimage.metrics.structural_similarity(np.transpose(gt, (1, 2, 0)),
-                                                             np.transpose(frame_out, (1, 2, 0)), multichannel=True)
+                lps = lpips(self.gt_list[idx].cuda(), torch.tensor(ref).unsqueeze(0).cuda(), net_type='squeeze')
+                psnr = skimage.metrics.peak_signal_noise_ratio(image_true=gt, image_test=ref, data_range=1)
+                ssim = skimage.metrics.structural_similarity(np.transpose(gt, (1, 2, 0)), np.transpose(ref, (1, 2, 0)),
+                                                             data_range=1, multichannel=True)
 
                 av_psnr += psnr
                 av_ssim += ssim
@@ -55,8 +54,6 @@ class MyTest:
                     print_and_save(msg, file_stream)
                 else:
                     print(msg)
-
-                self.gt_list[idx].to('cpu')
 
         av_psnr /= len(self.im_list)
         av_ssim /= len(self.im_list)
@@ -101,6 +98,47 @@ class ucf_dvf(MyTest):
             self.gt_list.append(self.transform(Image.open(input_dir + '/' + item + '/frame_01_gt.png')))
 
 
+def Vimeo90K_test(args, model):
+
+    _, val_dataset = Vimeo90K_interp(args.vimeo_dir)
+    val_loader = DataLoader(dataset=val_dataset, batch_size=1, shuffle=False, num_workers=8)
+
+    transform = transforms.Compose([transforms.ToTensor()])
+
+    img_out_dir = args.out_dir + '/vimeo90k'
+    if not os.path.exists(img_out_dir):
+        os.makedirs(img_out_dir)
+
+    av_psnr = 0
+    av_ssim = 0
+    av_lps = 0
+    for batch_idx, (frame0, frame1, frame2) in enumerate(val_loader):
+        frame0, frame2 = frame0.cuda(), frame2.cuda()
+        output = model(frame0, frame2)
+
+        imwrite(output, img_out_dir + '/' + str(batch_idx) + '.png', range=(0, 1))
+
+        ref = transform(Image.open(img_out_dir + '/' + str(batch_idx) + '.png')).numpy()
+
+        lps = lpips(frame1.cuda(), torch.tensor(ref).unsqueeze(0).cuda(), net_type='squeeze')
+        psnr = skimage.metrics.peak_signal_noise_ratio(image_true=frame1.squeeze().numpy(), image_test=ref,
+                                                       data_range=1)
+        ssim = skimage.metrics.structural_similarity(np.transpose(frame1.squeeze().numpy(), (1, 2, 0)),
+                                                     np.transpose(ref, (1, 2, 0)), data_range=1, multichannel=True)
+
+        print('idx: %d, psnr: %f, ssim: %f, lpips: %f' % (batch_idx, psnr, ssim, lps.item()))
+
+        av_psnr += psnr
+        av_ssim += ssim
+        av_lps += lps.item()
+
+    av_psnr /= len(val_loader)
+    av_ssim /= len(val_loader)
+    av_lps /= len(val_loader)
+
+    print(av_psnr, av_ssim, av_lps)
+
+
 #########################################
 
 def parse_args():
@@ -109,6 +147,7 @@ def parse_args():
     parser.add_argument('--gpu_id', type=int, default=0)
     parser.add_argument('--checkpoint', type=str, default='./checkpoints/CDFI_adacof.pth')
     parser.add_argument('--out_dir', type=str, default='./test_output/cdfi_adacof')
+    parser.add_argument('--vimeo_dir', type=str, default=None)
     parser.add_argument('--kernel_size', type=int, default=11)
     parser.add_argument('--dilation', type=int, default=2)
 
@@ -127,22 +166,30 @@ def main():
     checkpoint = torch.load(args.checkpoint)
     model.load_state_dict(checkpoint['state_dict'])
 
+    model.eval()
+
     print('===============================')
     print('Test: Middlebury_others')
-    test_dir = args.out_dir + '/middlebury_others'
-    if not os.path.exists(test_dir):
-        os.makedirs(test_dir)
+    img_out_dir = args.out_dir + '/middlebury_others'
+    if not os.path.exists(img_out_dir):
+        os.makedirs(img_out_dir)
     test_db = Middlebury_other('./test_data/middlebury_others/input', './test_data/middlebury_others/gt')
-    test_db.test(model, test_dir)
+    test_db.test(model, img_out_dir)
 
     print('===============================')
     print('Test: UCF101-DVF')
-    test_dir = args.out_dir + '/ucf101-dvf'
-    if not os.path.exists(test_dir):
-        os.makedirs(test_dir)
+    img_out_dir = args.out_dir + '/ucf101-dvf'
+    if not os.path.exists(img_out_dir):
+        os.makedirs(img_out_dir)
     test_db = ucf_dvf('./test_data/ucf101_interp_ours')
-    test_db.test(model, test_dir)
+    test_db.test(model, img_out_dir)
+
+    if args.vimeo_dir is not None:
+        print('===============================')
+        print('Test: Vimeo-90K')
+        Vimeo90K_test(args, model)
 
 
 if __name__ == "__main__":
     main()
+

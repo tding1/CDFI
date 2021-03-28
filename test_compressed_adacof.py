@@ -4,7 +4,7 @@ import argparse
 
 import torch
 
-from test import Middlebury_other, ucf_dvf
+from test import Middlebury_other, ucf_dvf, Vimeo90K_test
 from models.compressed_adacof import AdaCoFNet
 from utility import count_network_parameters
 
@@ -15,6 +15,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Compressed AdaCoF Evaluation')
 
     parser.add_argument('--gpu_id', type=int, default=0)
+    parser.add_argument('--vimeo_dir', type=str, default=None)
     parser.add_argument('--kernel_size', choices=[5, 11], type=int, default=5)
     parser.add_argument('--dilation', choices=[1, 2], type=int, default=1)
 
@@ -57,6 +58,11 @@ def main():
         os.makedirs(test_dir)
     test_db = ucf_dvf('./test_data/ucf101_interp_ours')
     test_db.test(model, test_dir)
+
+    if args.vimeo_dir is not None:
+        print('===============================')
+        print('Test: Vimeo-90K')
+        Vimeo90K_test(args, model)
 
 
 if __name__ == "__main__":

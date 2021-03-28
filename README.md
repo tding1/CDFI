@@ -15,11 +15,11 @@ We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpo
   |                    |            Vimeo-90K            |           Middlebury            |           UCF101-DVF            | #Params  |
   | :----------------: | :-----------------------------: | :-----------------------------: | :-----------------------------: | :---: |
   |                    |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |       |
-  |       AdaCoF       |       34.38, 0.974, 0.019       |       35.74, 0.979, 0.019       |     35.20, **0.967**, 0.019     | 21.8M |
-  | Compressed AdaCoF  |       34.15, 0.973, 0.020       |       35.46, 0.978, 0.019       |     35.14, **0.967**, 0.019     | 2.45M |
-  |      AdaCoF+       |       34.58, 0.975, 0.018       |       36.12, 0.981, 0.017       |     35.19, **0.967**, 0.019     | 22.9M |
-  | Compressed AdaCoF+ |       34.46, 0.975, 0.019       |       35.76, 0.979, 0.019       |     35.16, **0.967**, 0.019     | 2.56M |
-  |  Our Final Model   | **35.19**, **0.978**, **0.010** | **37.17**, **0.983**, **0.008** | **35.24**, **0.967**, **0.015** | 4.98M |
+  |       AdaCoF       |       34.35, 0.956, 0.019       |       35.72, 0.959, 0.019       |     35.16, **0.950**, 0.019     | 21.84M |
+  | Compressed AdaCoF  |       34.10, 0.954, 0.020       |       35.43, 0.957, 0.018       |     35.10, **0.950**, 0.019     | 2.45M |
+  |      AdaCoF+       |       34.56, 0.959, 0.018       |       36.09, 0.962, 0.017       |     35.16, **0.950**, 0.019     | 22.9M |
+  | Compressed AdaCoF+ |       34.44, 0.958, 0.019       |       35.73, 0.960, 0.018       |     35.13, **0.950**, 0.019     | 2.56M |
+  |  Our Final Model   | **35.17**, **0.964**, **0.010** | **37.14**, **0.966**, **0.007** | **35.21**, **0.950**, **0.015** | 4.98M |
 
 - Our final model also performs favorably against other state-of-the-arts (details refer to our paper)
 
@@ -139,7 +139,16 @@ Now it's ready to make further improvements/modifications on the compressed mode
 
 ## Citation
 
-Coming soon...
+~~~
+@article{ding2021cdfi,
+  title={CDFI: Compression-Driven Network Design for Frame Interpolation},
+  author={Ding, Tianyu and Liang, Luming and Zhu, Zhihui and Zharkov, Ilya},
+  journal={arXiv preprint arXiv:2103.10559},
+  year={2021}
+}
+~~~
+
+
 
 ## Acknowledgements
 
