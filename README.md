@@ -24,13 +24,13 @@ We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpo
 - Our final model also performs favorably against other state-of-the-arts (details refer to our paper)
 
   <p align="center">
-    <img src="figs/visual.jpg" />
+    <img src="imgs/visual.jpg" />
   </p>
 
 - The proposed framework is generic and can be easily transferred to other DNN-based frame interpolation method
 
 <p align="center">
-  <img src="figs/cdfi_fps_160.gif" />
+  <img src="imgs/cdfi_fps_160.gif" />
 </p>
 
 
