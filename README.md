@@ -93,10 +93,18 @@ By default, it will load the compressed AdaCoF+ model  `checkpoints/compressed_a
 ### Interpolate two frames
 
 ~~~bash
-$ python interpolate_twoframe.py --gpu_id 0 --first_frame figs/0.png --second_frame figs/1.png --output_frame output.png
+$ python interpolate_twoframe.py --gpu_id 0 --first_frame imgs/0.png --second_frame imgs/1.png --output_frame ./output.png
 ~~~
 
 By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`, and generate the intermediate frame `output.png` given two consecutive frames in a sequence. 
+
+### Interpolate video
+
+~~~bash
+$ python interpolate_video.py --gpu_id 0 --input_video imgs/img_seq/ --output_video ./interpolated_video
+~~~
+
+This script will interpolate a video sequence using our pre-trained model `checkpoints/CDFI_adacof.pth`, thus increasing the FPS by a factor of 2. You may want to repeat the procedure on the interpolated video if a higher FPS is desired.
 
 ## Train Our Model
 

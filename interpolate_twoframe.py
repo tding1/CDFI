@@ -17,8 +17,8 @@ def parse_args():
     parser.add_argument('--kernel_size', type=int, default=11)
     parser.add_argument('--dilation', type=int, default=2)
 
-    parser.add_argument('--first_frame', type=str, default='./figs/0.png')
-    parser.add_argument('--second_frame', type=str, default='./figs/1.png')
+    parser.add_argument('--first_frame', type=str, default='./imgs/0.png')
+    parser.add_argument('--second_frame', type=str, default='./imgs/1.png')
     parser.add_argument('--output_frame', type=str, default='./output.png')
 
     return parser.parse_args()
