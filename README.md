@@ -66,7 +66,7 @@ For user convenience, we already provide the [Middlebury](https://vision.middleb
 
 We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch/`, which is a slightly modified version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeeze net backbone). 
 
-**Note:** We are using squeeze net in calculating LPIPS, while other work (Softsplat, EDSC, etc) might use different methods in their implementations, e.g., alex net. Hence there may be discrepancies among the results, see also the discussion [here](https://github.com/tding1/CDFI/issues/6).
+**Note:** We are using squeeze net in calculating LPIPS, while other work (Softsplat, EDSC, etc) might use different methods in their original implementations, e.g., alex net. Although we manually test AdaCoF, EDSC, CAIN under the same setting and demonstrate the results in the paper, there may be discrepancies from their original results, see also the discussion [here](https://github.com/tding1/CDFI/issues/6).
 
 ### Test our pre-trained CDFI model
 
