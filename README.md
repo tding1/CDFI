@@ -1,6 +1,6 @@
 # CDFI (Compression-Driven-Frame-Interpolation)
 
-[[Paper]()] (Coming soon...) | [[arXiv](https://arxiv.org/abs/2103.10559)]
+[[Paper](https://openaccess.thecvf.com/content/CVPR2021/html/Ding_CDFI_Compression-Driven_Network_Design_for_Frame_Interpolation_CVPR_2021_paper.html)] [[arXiv](https://arxiv.org/abs/2103.10559)]
 
 [Tianyu Ding*](https://www.tianyuding.com), [Luming Liang*](https://scholar.google.com/citations?user=vTgdAS4AAAAJ&hl=en), [Zhihui Zhu](http://mysite.du.edu/~zzhu61/index.html), Ilya Zharkov
 
@@ -157,7 +157,16 @@ Now it's ready to make further improvements/modifications on the compressed mode
   year={2021}
 }
 ~~~
-
+or
+~~~
+@inproceedings{ding2021cdfi,
+  title={CDFI: Compression-Driven Network Design for Frame Interpolation},
+  author={Ding, Tianyu and Liang, Luming and Zhu, Zhihui and Zharkov, Ilya},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={8001--8011},
+  year={2021}
+}
+~~~
 
 
 ## Acknowledgements
