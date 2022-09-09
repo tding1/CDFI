@@ -6,20 +6,24 @@
 
 IEEE Conference on Computer Vision and Pattern Recognition (**CVPR**), 2021
 
+## News
+
+An expanded version of the conference paper will be released soon, which reveals technical details regarding model compression based on layer-wise sparsity information obtained via optimization. That part of code will also be added.
+
 ## Introduction
 
 We propose a **C**ompression-**D**riven network design for **F**rame **I**nterpolation (**CDFI**), that leverages model compression to significantly reduce the model size (allows a better understanding of the current architecture) while making room for further improvements and achieving superior performance in the end. Concretely, we first compress  [AdaCoF](https://openaccess.thecvf.com/content_CVPR_2020/html/Lee_AdaCoF_Adaptive_Collaboration_of_Flows_for_Video_Frame_Interpolation_CVPR_2020_paper.html) and show that a 10X compressed AdaCoF performs similarly as its original counterpart; then we improve upon this compressed model with simple modifications. *Note that typically it is prohibitive to implement the same improvements on the original heavy model.*
 
 - We achieve a significant performance gain with only a quarter in size compared with the original AdaCoF
 
-  |                    |            Vimeo-90K            |           Middlebury            |           UCF101-DVF            | #Params  |
-  | :----------------: | :-----------------------------: | :-----------------------------: | :-----------------------------: | :---: |
-  |                    |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |       |
-  |       AdaCoF       |       34.35, 0.956, 0.019       |       35.72, 0.959, 0.019       |     35.16, **0.950**, 0.019     | 21.84M |
-  | Compressed AdaCoF  |       34.10, 0.954, 0.020       |       35.43, 0.957, 0.018       |     35.10, **0.950**, 0.019     | 2.45M |
-  |      AdaCoF+       |       34.56, 0.959, 0.018       |       36.09, 0.962, 0.017       |     35.16, **0.950**, 0.019     | 22.93M |
-  | Compressed AdaCoF+ |       34.44, 0.958, 0.019       |       35.73, 0.960, 0.018       |     35.13, **0.950**, 0.019     | 2.56M |
-  |  Our Final Model   | **35.17**, **0.964**, **0.010** | **37.14**, **0.966**, **0.007** | **35.21**, **0.950**, **0.015** | 4.98M |
+  |                    |            Vimeo-90K            |           Middlebury            |           UCF101-DVF            | #Params |
+  | :----------------: | :-----------------------------: | :-----------------------------: | :-----------------------------: | :-----: |
+  |                    |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |        PSNR, SSIM, LPIPS        |         |
+  |       AdaCoF       |       34.35, 0.956, 0.019       |       35.72, 0.959, 0.019       |     35.16, **0.950**, 0.019     | 21.84M  |
+  | Compressed AdaCoF  |       34.10, 0.954, 0.020       |       35.43, 0.957, 0.018       |     35.10, **0.950**, 0.019     |  2.45M  |
+  |      AdaCoF+       |       34.56, 0.959, 0.018       |       36.09, 0.962, 0.017       |     35.16, **0.950**, 0.019     | 22.93M  |
+  | Compressed AdaCoF+ |       34.44, 0.958, 0.019       |       35.73, 0.960, 0.018       |     35.13, **0.950**, 0.019     |  2.56M  |
+  |  Our Final Model   | **35.17**, **0.964**, **0.010** | **37.14**, **0.966**, **0.007** | **35.21**, **0.950**, **0.015** |  4.98M  |
 
 - Our final model also performs favorably against other state-of-the-arts (details refer to our paper)
 
@@ -41,13 +45,25 @@ The above GIF is a demo of using our method to generate slow motion video, which
 - CUDA 11.0
 - python 3.8.3
 
-- torch 1.6.0
-- torchvision 0.7.0
+- torch 1.8.1+cu111
+- torchvision 0.9.1+cu111
 - cupy 7.7.0
-- scipy 1.5.2
-- numpy 1.19.1
+- scipy 1.7.3
+- numpy 1.21.5
 - Pillow 7.2.0
-- scikit-image 0.17.2
+- scikit-image 0.19.2
+- lpips
+
+## Installation
+
+~~~bash
+conda create -n cdfi python==3.8.3
+conda activate cdfi
+conda install -c conda-forge cupy==7.7.0
+pip install torch==1.8.1+cu111 torchvision -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+pip install opencv-python lpips
+conda install matplotlib scikit-image
+~~~
 
 ## Test Pre-trained Models
 
@@ -64,7 +80,7 @@ For user convenience, we already provide the [Middlebury](https://vision.middleb
 
 ### Evaluation metrics
 
-We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924), a newly proposed metric that measures perceptual similarity, for which the smaller the better. For user convenience, we include the implementation of LPIPS in our repo under `lpips_pytorch/`, which is a slightly modified version of [here](https://github.com/S-aiueo32/lpips-pytorch) (with an updated squeeze net backbone). 
+We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM, for which the higher the better. We also use [LPIPS](https://arxiv.org/abs/1801.03924) to measure perceptual similarity, for which the smaller the better.
 
 **Note:** We are using squeeze net in calculating LPIPS, while other work (Softsplat, EDSC, etc) might use different methods in their original implementations, e.g., alex net. Although we manually test AdaCoF, EDSC, CAIN under the same setting and demonstrate the results in the paper, there may be discrepancies from their original results, see also the discussion [here](https://github.com/tding1/CDFI/issues/6).
 
@@ -79,7 +95,7 @@ By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. I
 ### Test the compressed AdaCoF
 
 ~~~bash
-$ python test_compressed_adacof.py --gpu_id 0 --kernel_size 5 --dilation 1
+$ python test.py --gpu_id 0 --model compressed_adacof --kernel_size 5 --dilation 1
 ~~~
 
 By default, it will load the compressed AdaCoF model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
@@ -87,7 +103,7 @@ By default, it will load the compressed AdaCoF model  `checkpoints/compressed_ad
 ### Test the compressed AdaCoF+
 
 ~~~bash
-$ python test_compressed_adacof.py --gpu_id 0 --kernel_size 11 --dilation 2
+$ python test.py --gpu_id 0 --model compressed_adacof --kernel_size 11 --dilation 2
 ~~~
 
 By default, it will load the compressed AdaCoF+ model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
