@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 import utility
 from loss import Loss
 from datasets import Vimeo90K_interp
-from test import Middlebury_other
+from mytest import Middlebury_other
 from models.cdfi_adacof import CDFI_adacof
 
 
@@ -30,6 +30,7 @@ def parse_args():
     # Directory Setting
     parser.add_argument("--data_dir", type=str, default="./vimeo_triplet/")
     parser.add_argument("--uid", type=str, default=None)
+    parser.add_argument("--checkpoint", type=str, default=None)
     parser.add_argument(
         "--force", action="store_true", help="force to override the given uid"
     )
@@ -48,6 +49,9 @@ def parse_args():
         type=str,
         default="1*Charb+0.01*g_Spatial+0.005*VGG",
         help="loss function configuration",
+    )
+    parser.add_argument(
+        "--num_training_samples", type=int, default=-1, help="Traning sub dataset size"
     )
 
     # Optimization specifications
@@ -71,6 +75,15 @@ def parse_args():
         help="optimizer to use (SGD | ADAM | RMSprop | ADAMax | OBProxSG)",
     )
     parser.add_argument("--weight_decay", type=float, default=0, help="weight decay")
+    parser.add_argument(
+        "--lambda_",
+        type=float,
+        default=1e-4,
+        help="regularization parameter for L1 optimization",
+    )
+    parser.add_argument(
+        "--Np", type=int, default=5, help="number of P-steps in OBProxSG"
+    )
 
     # Options for AdaCoF
     parser.add_argument("--kernel_size", type=int, default=11)

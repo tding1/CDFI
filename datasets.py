@@ -8,7 +8,15 @@ import torchvision.transforms.functional as TF
 
 
 class DBreader_Vimeo90k(Dataset):
-    def __init__(self, root, path_list, random_crop=None, resize=None, augment_s=True, augment_t=True):
+    def __init__(
+        self,
+        root,
+        path_list,
+        random_crop=None,
+        resize=None,
+        augment_s=True,
+        augment_t=True,
+    ):
         self.root = root
         self.path_list = path_list
 
@@ -25,7 +33,7 @@ class DBreader_Vimeo90k(Dataset):
         return len(self.path_list)
 
     def Vimeo90K_loader(self, im_path):
-        abs_im_path = os.path.join(self.root, 'sequences', im_path)
+        abs_im_path = os.path.join(self.root, "sequences", im_path)
 
         transform_list = []
         if self.resize is not None:
@@ -38,7 +46,9 @@ class DBreader_Vimeo90k(Dataset):
         rawFrame2 = Image.open(os.path.join(abs_im_path, "im3.png"))
 
         if self.random_crop is not None:
-            i, j, h, w = transforms.RandomCrop.get_params(rawFrame1, output_size=self.random_crop)
+            i, j, h, w = transforms.RandomCrop.get_params(
+                rawFrame1, output_size=self.random_crop
+            )
             rawFrame0 = TF.crop(rawFrame0, i, j, h, w)
             rawFrame1 = TF.crop(rawFrame1, i, j, h, w)
             rawFrame2 = TF.crop(rawFrame2, i, j, h, w)
@@ -66,16 +76,19 @@ class DBreader_Vimeo90k(Dataset):
             return frame0, frame1, frame2
 
 
-def make_dataset(root, list_file):
+def make_dataset(root, list_file, num_training_samples=-1):
     raw_im_list = open(os.path.join(root, list_file)).read().splitlines()
     raw_im_list = raw_im_list[:-1]  # the last line is invalid in test set
     assert len(raw_im_list) > 0
     random.shuffle(raw_im_list)
-    return raw_im_list
+    if num_training_samples <= 0:
+        return raw_im_list
+    else:
+        return raw_im_list[-num_training_samples:]
 
 
-def Vimeo90K_interp(root):
-    train_list = make_dataset(root, "tri_trainlist.txt")
+def Vimeo90K_interp(root, num_training_samples=-1):
+    train_list = make_dataset(root, "tri_trainlist.txt", num_training_samples)
     val_list = make_dataset(root, "tri_testlist.txt")
     train_dataset = DBreader_Vimeo90k(root, train_list)
     val_dataset = DBreader_Vimeo90k(root, val_list)

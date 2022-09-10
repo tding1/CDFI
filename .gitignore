@@ -2,6 +2,7 @@
 .idea/*
 test_output/*
 *.png
+model_weights
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
