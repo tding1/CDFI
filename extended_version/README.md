@@ -29,6 +29,8 @@ Note that for pruning an existing (pre-trained) model, you need to provide the c
 
 ## Get the sparsity report from the pruned model
 
+Suppose for the above setting you get the pruned model, now you can get the sparsity report from the pruned model by running the following command.
+
 ~~~bash
 python get_sparsity_report.py \
         --model adacof \
@@ -38,7 +40,7 @@ python get_sparsity_report.py \
         --inactive
 ~~~
 
-You will get the sparsity analysis for each layer like the following:
+You will get the sparsity analysis (actually only density is shown) for each layer displayed like the following, where `In`/`Out` denote the number of input/output channels of each layer for the original model and `In'`/`Out'` denote the reduced number of input/output channels of each layer given the density ratio (by taking the square root), as explained in the paper.
 
 ~~~bash
                                Name                 Density  In  Out   In' Out'
@@ -103,3 +105,7 @@ You will get the sparsity analysis for each layer like the following:
                get_kernel.moduleOcclusion.7.weight   0.778   64    1   56    0
 
 ~~~
+
+## Constructing a compact model
+
+Given `In'`/`Out'`, you are now able to design the new architecture for a compact model by using the `-min`/`-max` strategy explained in the paper or your own way.
