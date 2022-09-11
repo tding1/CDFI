@@ -89,56 +89,63 @@ def parse_args():
     parser.add_argument("--kernel_size", type=int, default=11)
     parser.add_argument("--dilation", type=int, default=2)
 
+    parser.add_argument("--inactive", action="store_true", default=None)
+
     args = parser.parse_args()
 
-    if args.uid is None:
-        unique_id = str(np.random.randint(0, 100000))
-        print("revise the unique id to a random number " + str(unique_id))
-        args.uid = unique_id
-        timestamp = datetime.datetime.now().strftime("%a-%b-%d-%H-%M")
-        save_path = "./model_weights/" + args.uid + "-" + timestamp
-    else:
-        save_path = "./model_weights/" + str(args.uid)
+    if not args.inactive:
 
-    if not os.path.exists(save_path + "/best" + ".pth"):
-        os.makedirs(save_path, exist_ok=True)
-    else:
-        if not args.force:
-            raise ("please use another uid ")
+        if args.uid is None:
+            unique_id = str(np.random.randint(0, 100000))
+            print("revise the unique id to a random number " + str(unique_id))
+            args.uid = unique_id
+            timestamp = datetime.datetime.now().strftime("%a-%b-%d-%H-%M")
+            save_path = "./model_weights/" + args.uid + "-" + timestamp
         else:
-            print("override this uid" + args.uid)
-            for m in range(1, 10):
-                if not os.path.exists(save_path + "/log.txt.bk" + str(m)):
-                    shutil.copy(
-                        save_path + "/log.txt", save_path + "/log.txt.bk" + str(m)
-                    )
-                    shutil.copy(
-                        save_path + "/args.txt", save_path + "/args.txt.bk" + str(m)
-                    )
-                    break
+            save_path = "./model_weights/" + str(args.uid)
 
-    parser.add_argument(
-        "--save_path", default=save_path, help="the output dir of weights"
-    )
-    parser.add_argument(
-        "--log", default=save_path + "/log.txt", help="the log file in training"
-    )
-    parser.add_argument("--arg", default=save_path + "/args.txt", help="the args used")
+        if not os.path.exists(save_path + "/best" + ".pth"):
+            os.makedirs(save_path, exist_ok=True)
+        else:
+            if not args.force:
+                raise ("please use another uid ")
+            else:
+                print("override this uid" + args.uid)
+                for m in range(1, 10):
+                    if not os.path.exists(save_path + "/log.txt.bk" + str(m)):
+                        shutil.copy(
+                            save_path + "/log.txt", save_path + "/log.txt.bk" + str(m)
+                        )
+                        shutil.copy(
+                            save_path + "/args.txt", save_path + "/args.txt.bk" + str(m)
+                        )
+                        break
 
-    args = parser.parse_args()
+        parser.add_argument(
+            "--save_path", default=save_path, help="the output dir of weights"
+        )
+        parser.add_argument(
+            "--log", default=save_path + "/log.txt", help="the log file in training"
+        )
+        parser.add_argument(
+            "--arg", default=save_path + "/args.txt", help="the args used"
+        )
 
-    with open(args.log, "w") as f:
-        f.close()
-    with open(args.arg, "w") as f:
-        print(args)
-        print(args, file=f)
-        f.close()
-    if args.use_cudnn:
-        print("cudnn is used")
-        torch.backends.cudnn.benchmark = True
-    else:
-        print("cudnn is not used")
-        torch.backends.cudnn.benchmark = False
+        args = parser.parse_args()
+
+        with open(args.log, "w") as f:
+            f.close()
+        with open(args.arg, "w") as f:
+            print(args)
+            print(args, file=f)
+            f.close()
+
+        if args.use_cudnn:
+            print("cudnn is used")
+            torch.backends.cudnn.benchmark = True
+        else:
+            print("cudnn is not used")
+            torch.backends.cudnn.benchmark = False
 
     return args
 

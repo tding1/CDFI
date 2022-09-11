@@ -8,7 +8,7 @@ IEEE Conference on Computer Vision and Pattern Recognition (**CVPR**), 2021
 
 ## News
 
-An expanded version of the conference paper will be released soon, which reveals technical details regarding model compression based on layer-wise sparsity information obtained via optimization. That part of code will also be added.
+An expanded version of the conference paper will be released soon, which reveals technical details regarding model compression based on layer-wise sparsity information obtained via optimization. That part of code is available at the sub-directory [extended_version](https://github.com/tding1/CDFI/tree/main/extended_version).
 
 ## Introduction
 
@@ -87,7 +87,7 @@ We use the built-in functions in `skimage.metrics` to compute the PSNR and SSIM,
 ### Test our pre-trained CDFI model
 
 ~~~bash
-$ python test.py --gpu_id 0
+$ python mytest.py --gpu_id 0
 ~~~
 
 By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/cdfi_adacof/`.
@@ -95,7 +95,7 @@ By default, it will load our pre-trained model  `checkpoints/CDFI_adacof.pth`. I
 ### Test the compressed AdaCoF
 
 ~~~bash
-$ python test.py --gpu_id 0 --model compressed_adacof --kernel_size 5 --dilation 1
+$ python mytest.py --gpu_id 0 --model compressed_adacof --kernel_size 5 --dilation 1
 ~~~
 
 By default, it will load the compressed AdaCoF model  `checkpoints/compressed_adacof_F_5_D_1.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_5_D_1/`.
@@ -103,7 +103,7 @@ By default, it will load the compressed AdaCoF model  `checkpoints/compressed_ad
 ### Test the compressed AdaCoF+
 
 ~~~bash
-$ python test.py --gpu_id 0 --model compressed_adacof --kernel_size 11 --dilation 2
+$ python mytest.py --gpu_id 0 --model compressed_adacof --kernel_size 11 --dilation 2
 ~~~
 
 By default, it will load the compressed AdaCoF+ model  `checkpoints/compressed_adacof_F_11_D_2.pth`. It will print the quantitative results on both Middlebury and UCF101-DVF, and the interpolated images will be saved under `test_output/compressed_adacof_F_11_D_2/`.
