@@ -1,4 +1,4 @@
-# Code for extended paper of CDFI
+# Code for extended paper ([arXiv](https://arxiv.org/abs/2209.04551)) of CDFI
 
 ## Preparation
 
