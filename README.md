@@ -2,13 +2,11 @@
 
 [[Paper](https://openaccess.thecvf.com/content/CVPR2021/html/Ding_CDFI_Compression-Driven_Network_Design_for_Frame_Interpolation_CVPR_2021_paper.html)] [[arXiv](https://arxiv.org/abs/2103.10559)]
 
-[Tianyu Ding*](https://www.tianyuding.com), [Luming Liang*](https://scholar.google.com/citations?user=vTgdAS4AAAAJ&hl=en), [Zhihui Zhu](http://mysite.du.edu/~zzhu61/index.html), Ilya Zharkov
-
 IEEE Conference on Computer Vision and Pattern Recognition (**CVPR**), 2021
 
 ## News
 
-An expanded version of the conference paper will be released soon, which reveals technical details regarding model compression based on layer-wise sparsity information obtained via optimization. That part of code is available at the sub-directory [extended_version](https://github.com/tding1/CDFI/tree/main/extended_version).
+An expanded version of the conference paper is released at [arXiv](https://arxiv.org/abs/2209.04551), which reveals technical details regarding model compression based on layer-wise sparsity information obtained via optimization. That part of code is available at the sub-directory [extended_version](https://github.com/tding1/CDFI/tree/main/extended_version).
 
 ## Introduction
 
@@ -146,7 +144,7 @@ It will generate an unique ID for each training, and all the intermediate result
 
 ## Apply CDFI to New Models
 
-One nice thing about CDFI is that the framework can be easily applied to other (heavy) DNN models and potentially boost their performance. The key to CDFI is the *optimization-based* compression that compresses a model via fine-grained pruning. In particular, we use the efficient and easy-to-use sparsity-inducing optimizer [OBPROXSG](https://github.com/tianyic/obproxsg) (see also [paper](https://arxiv.org/abs/2004.03639)), and summarize the compression procedure for any other model in the following.
+One nice thing about CDFI is that the framework can be easily applied to other (heavy) DNN models and potentially boost their performance. The key to CDFI is the *optimization-based* compression that compresses a model via fine-grained pruning. In particular, we use the efficient and easy-to-use sparsity-inducing optimizer [OBPROXSG](https://github.com/tianyic/obproxsg) (see also [paper](https://arxiv.org/abs/2004.03639)), and summarize the compression procedure for any other model in the following. For details, we recommend checking our long version of the paper at [arXiv](https://arxiv.org/abs/2209.04551) and the additional code at [extended_version](https://github.com/tding1/CDFI/tree/main/extended_version).
 
 - Copy the [OBPROXSG optimizer](https://github.com/tianyic/obproxsg/blob/master/optimizer/obproxsg.py), which is already implemented as `torch.optim.optimizer`, to your working directory
 - Starting from a pre-trained model, finetune its weights by using the OBPROXSG optimizer, like using any standard PyTorch built-in optimizer such as SGD or Adam
